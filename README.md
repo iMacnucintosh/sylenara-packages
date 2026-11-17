@@ -1,17 +1,17 @@
-<h1 align="center">Lunele packages</h1>
+<h1 align="center">Sylenara packages</h1>
 
 <p align="center"><strong>English</strong> · <a href="./README.es.md">Español</a></p>
 
 <p align="center">
-The pacman repository of <a href="https://github.com/iMacnucintosh/lunele-shell">Lunele</a>: its packages and the libraries they need from the AUR, ready-built and signed.
+The pacman repository of <a href="https://github.com/iMacnucintosh/sylenara-shell">Sylenara</a>: its packages and the libraries they need from the AUR, ready-built and signed.
 </p>
 
 ## What is in it
 
 | Package | What it is |
 | --- | --- |
-| `lunele-shell-git` | The shell itself |
-| `lunele-cli-git` | The `lunele` command |
+| `sylenara-shell-git` | The shell itself |
+| `sylenara-cli-git` | The `sylenara` command |
 | `seeker-git` | Seeker, the file manager |
 | `things-git` | Things, the package manager |
 | `veo-git` | Veo, the video player |
@@ -21,28 +21,28 @@ They are built from the **latest release** of each repository (the `-git` suffix
 
 ## Install
 
-The Lunele installer sets it up; you do not need to do anything here. By hand, on Arch Linux:
+The Sylenara installer sets it up; you do not need to do anything here. By hand, on Arch Linux:
 
 ```sh
-sudo pacman-key --add lunele.gpg
-sudo pacman-key --lsign-key A13DAD18CEFF0DB5E6C0AD4C1CD7CBE72F0DD14B
+sudo pacman-key --add sylenara.gpg
+sudo pacman-key --lsign-key D99127AC7375512EF97E86982CBF92E205BD0DC9
 ```
 
 and at the end of `/etc/pacman.conf`:
 
 ```ini
-[lunele]
+[sylenara]
 SigLevel = Required
-Server = https://github.com/iMacnucintosh/lunele-packages/releases/download/x86_64
+Server = https://github.com/iMacnucintosh/sylenara-packages/releases/download/x86_64
 ```
 
-Then `sudo pacman -Syu lunele-shell-git`. Updates arrive with the system's.
+Then `sudo pacman -Syu sylenara-shell-git`. Updates arrive with the system's.
 
 ## How it is built
 
 `.github/workflows/build.yml` runs every three hours (and by hand). In a clean `archlinux:base-devel` container, `scripts/plan.py` works out what changed (a new release of one of the repositories, a new version in the AUR, or a new Qt or Python in Arch, which the binaries are tied to) and `scripts/build.py` builds only that, signs each package and the database, and `scripts/publish.sh` uploads them to the `x86_64` release and removes the old versions.
 
-The signing key is "Lunele packages" (ed25519, `A13DAD18CEFF0DB5E6C0AD4C1CD7CBE72F0DD14B`). Its public half is `lunele.gpg`; its secret half lives only in this repository's `SIGNING_KEY` secret and with its owner.
+The signing key is "Sylenara packages" (ed25519, `D99127AC7375512EF97E86982CBF92E205BD0DC9`). Its public half is `sylenara.gpg`; its secret half lives only in this repository's `SIGNING_KEY` secret and with its owner.
 
 ## License
 

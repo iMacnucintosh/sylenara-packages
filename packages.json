@@ -1,17 +1,17 @@
 {
-    "repo": "lunele",
+    "repo": "sylenara",
     "release": "x86_64",
-    "key": "A13DAD18CEFF0DB5E6C0AD4C1CD7CBE72F0DD14B",
+    "key": "D99127AC7375512EF97E86982CBF92E205BD0DC9",
     "packages": [
         { "name": "ttf-rubik-vf", "aur": true },
         { "name": "python-materialyoucolor", "aur": true, "abi": ["python"] },
         { "name": "libcava", "aur": true },
         { "name": "qt6-m3shapes-git", "aur": true, "abi": ["qt"] },
         { "name": "quickshell-git", "aur": true, "abi": ["qt"] },
-        { "name": "lunele-cli-git", "github": "lunele-cli", "abi": ["python"] },
+        { "name": "sylenara-cli-git", "github": "sylenara-cli", "abi": ["python"] },
         { "name": "seeker-git", "github": "seeker", "abi": ["qt"] },
         { "name": "things-git", "github": "things", "abi": ["qt"] },
         { "name": "veo-git", "github": "veo", "abi": ["qt"] },
-        { "name": "lunele-shell-git", "github": "lunele-shell", "abi": ["qt"] }
+        { "name": "sylenara-shell-git", "github": "sylenara-shell", "abi": ["qt"] }
     ]
 }

@@ -10,7 +10,7 @@ OUT="$(realpath "$1")"
 STATE="$(realpath "$2")"
 NAME="$(jq -r .repo "$HERE/packages.json")"
 TAG="$(jq -r .release "$HERE/packages.json")"
-REPO="iMacnucintosh/lunele-packages"
+REPO="iMacnucintosh/sylenara-packages"
 
 cd "$OUT"
 files=(./*.pkg.tar.zst ./*.pkg.tar.zst.sig)
