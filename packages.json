@@ -1,5 +1,5 @@
 {
-    "repo": "sylphrena",
+    "repo": "lunele",
     "release": "x86_64",
     "key": "D48895A048042C67AB45D200903338E0D2D31CEC",
     "packages": [
@@ -8,10 +8,10 @@
         { "name": "libcava", "aur": true },
         { "name": "qt6-m3shapes-git", "aur": true, "abi": ["qt"] },
         { "name": "quickshell-git", "aur": true, "abi": ["qt"] },
-        { "name": "sylphrena-cli-git", "github": "sylphrena-cli", "abi": ["python"] },
+        { "name": "lunele-cli-git", "github": "lunele-cli", "abi": ["python"] },
         { "name": "seeker-git", "github": "seeker", "abi": ["qt"] },
         { "name": "things-git", "github": "things", "abi": ["qt"] },
         { "name": "veo-git", "github": "veo", "abi": ["qt"] },
-        { "name": "sylphrena-shell-git", "github": "sylphrena-shell", "abi": ["qt"] }
+        { "name": "lunele-shell-git", "github": "lunele-shell", "abi": ["qt"] }
     ]
 }

@@ -20,7 +20,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent.parent
 CONF = json.loads((HERE / "packages.json").read_text())
 OWNER = "iMacnucintosh"
-UA = {"User-Agent": "sylphrena-packages"}
+UA = {"User-Agent": "lunele-packages"}
 
 
 def get(url: str) -> str:
