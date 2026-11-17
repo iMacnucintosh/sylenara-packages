@@ -43,3 +43,9 @@ Then `sudo pacman -Syu lunele-shell-git`. Updates arrive with the system's.
 `.github/workflows/build.yml` runs every three hours (and by hand). In a clean `archlinux:base-devel` container, `scripts/plan.py` works out what changed (a new release of one of the repositories, a new version in the AUR, or a new Qt or Python in Arch, which the binaries are tied to) and `scripts/build.py` builds only that, signs each package and the database, and `scripts/publish.sh` uploads them to the `x86_64` release and removes the old versions.
 
 The signing key is "Lunele packages" (ed25519, `D48895A048042C67AB45D200903338E0D2D31CEC`). Its public half is `lunele.gpg`; its secret half lives only in this repository's `SIGNING_KEY` secret and with its owner.
+
+## License
+
+GPL-3.0-only, see [LICENSE](LICENSE). Copyright (C) 2026 Manuel López Mallorquín.
+
+That covers the scripts and workflows of this repository. Every package in the repository is built from the source of its own project, at the release tag its version names, and keeps that project's license (the source of each one is public at `github.com/iMacnucintosh/<package>`; the build recipe, the `PKGBUILD`, comes from the same repository and is licensed with it). The packages taken from the AUR keep the license they declare.
