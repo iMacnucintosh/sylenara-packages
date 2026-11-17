@@ -2,7 +2,7 @@ name: Build packages
 
 on:
   schedule:
-    # New releases of Sylphrena's repos, AUR updates and new versions of Qt or Python in Arch
+    # New releases of Sylenara's repos, AUR updates and new versions of Qt or Python in Arch
     - cron: "17 */3 * * *"
   workflow_dispatch:
     inputs:
@@ -35,10 +35,10 @@ jobs:
         run: |
           mkdir -p repo
           gh release view x86_64 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
-            gh release create x86_64 --repo "$GITHUB_REPOSITORY" --title "Sylphrena packages (x86_64)" \
-              --notes "The pacman repository of Sylphrena. Do not download from here: the installer sets it up."
+            gh release create x86_64 --repo "$GITHUB_REPOSITORY" --title "Sylenara packages (x86_64)" \
+              --notes "The pacman repository of Sylenara. Do not download from here: the installer sets it up."
           gh release download x86_64 --repo "$GITHUB_REPOSITORY" --dir repo \
-            --pattern 'sylphrena.db' --pattern 'sylphrena.files' --pattern 'state.json' || true
+            --pattern 'sylenara.db' --pattern 'sylenara.files' --pattern 'state.json' || true
 
       - name: Plan
         id: plan

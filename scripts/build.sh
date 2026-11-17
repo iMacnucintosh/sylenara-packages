@@ -4,7 +4,7 @@
 #
 #   SIGNING_KEY=<armored secret key> build.sh PLAN.json REPO_DIR
 #
-# REPO_DIR has the current database (sylphrena.db, sylphrena.files, as published) or nothing on the first run; the new
+# REPO_DIR has the current database (sylenara.db, sylenara.files, as published) or nothing on the first run; the new
 # packages, their signatures and the updated, signed database end up there. Packages not in the plan come from the
 # published repository, so a build only needs what changed.
 set -euo pipefail
@@ -15,7 +15,7 @@ OUT="$(realpath "$2")"
 CONF="$HERE/packages.json"
 NAME="$(jq -r .repo "$CONF")"
 KEY="$(jq -r .key "$CONF")"
-SERVER="https://github.com/iMacnucintosh/sylphrena-packages/releases/download/$(jq -r .release "$CONF")"
+SERVER="https://github.com/iMacnucintosh/sylenara-packages/releases/download/$(jq -r .release "$CONF")"
 : "${SIGNING_KEY:?the secret signing key goes in SIGNING_KEY}"
 
 echo "::group::Container"
@@ -23,16 +23,16 @@ pacman -Syu --noconfirm --needed git sudo jq python >/dev/null
 id builder >/dev/null 2>&1 || useradd -m builder
 echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder
 # Release builds, without -debug packages, using every core
-cat > /etc/makepkg.conf.d/sylphrena.conf <<EOF
+cat > /etc/makepkg.conf.d/sylenara.conf <<EOF
 OPTIONS+=(!debug)
 MAKEFLAGS="-j$(nproc)"
-PACKAGER="Sylphrena packages <https://github.com/iMacnucintosh/sylphrena-packages>"
+PACKAGER="Sylenara packages <https://github.com/iMacnucintosh/sylenara-packages>"
 GPGKEY="$KEY"
 EOF
 # The key signs as the builder; pacman trusts it for the packages already published
 sudo -u builder gpg --batch --quiet --import <<< "$SIGNING_KEY"
 pacman-key --init >/dev/null 2>&1
-pacman-key --add "$HERE/sylphrena.gpg" >/dev/null 2>&1
+pacman-key --add "$HERE/sylenara.gpg" >/dev/null 2>&1
 pacman-key --lsign-key "$KEY" >/dev/null 2>&1
 if [[ -f "$OUT/$NAME.db" ]]; then
     printf '\n[%s]\nSigLevel = Required\nServer = %s\n' "$NAME" "$SERVER" >> /etc/pacman.conf
@@ -59,7 +59,7 @@ while read -r pkg; do
         sub="$dir/packaging"
     fi
     # -i: installed, so the packages built after it find it
-    (cd "$sub" && sudo -u builder env SYLPHRENA_REF="$ref" makepkg --syncdeps --install --sign --noconfirm --needed)
+    (cd "$sub" && sudo -u builder env SYLENARA_REF="$ref" makepkg --syncdeps --install --sign --noconfirm --needed)
     for f in "$sub"/*.pkg.tar.zst; do
         cp "$f" "$f.sig" "$OUT/"
         built+=("$OUT/$(basename "$f")")
