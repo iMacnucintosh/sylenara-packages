@@ -1,7 +1,7 @@
 {
     "repo": "lunele",
     "release": "x86_64",
-    "key": "D48895A048042C67AB45D200903338E0D2D31CEC",
+    "key": "A13DAD18CEFF0DB5E6C0AD4C1CD7CBE72F0DD14B",
     "packages": [
         { "name": "ttf-rubik-vf", "aur": true },
         { "name": "python-materialyoucolor", "aur": true, "abi": ["python"] },
