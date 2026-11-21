@@ -5,7 +5,8 @@
     "packages": [
         { "name": "ttf-rubik-vf", "aur": true },
         { "name": "python-materialyoucolor", "aur": true, "abi": ["python"] },
-        { "name": "libcava", "aur": true },
+        { "name": "libcava", "aur": true,
+          "abi": ["alsa-lib", "fftw", "iniparser", "libpipewire", "libpulse", "ncurses", "portaudio", "sdl2-compat", "sndio"] },
         { "name": "qt6-m3shapes-git", "aur": true, "abi": ["qt"] },
         { "name": "quickshell-git", "aur": true, "abi": ["qt"] },
         { "name": "sylenara-cli-git", "github": "sylenara-cli", "abi": ["python"] },

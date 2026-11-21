@@ -5,8 +5,10 @@
 
 Each package has a fingerprint: what it is built from (the latest release tag of its repo; for the AUR, the version
 in the AUR and, for a -git package, the commit its source points at) plus the versions of what its binaries are tied
-to (Qt: the plugin, Seeker, Things and Veo use its private API; Python: compiled modules). A package is built when its
-fingerprint changed; it runs inside the build container, so the versions are those Arch has today.
+to (Qt: the plugin, Seeker, Things and Veo use its private API; Python: compiled modules; any other name is a package
+of Arch whose sonames it links, as `libsndio.so=9`). A package is built when its fingerprint changed; it runs inside the
+build container, so the versions are those Arch has today. A rebuild that keeps the version gets a higher pkgrel
+(build.sh), so pacman offers it to those who have the old one.
 """
 from __future__ import annotations
 
@@ -56,8 +58,13 @@ def aur_fingerprint(name: str) -> str:
 
 
 def abi(kind: str) -> str:
-    pkg = {"qt": "qt6-base", "python": "python"}[kind]
+    pkg = {"qt": "qt6-base", "python": "python"}.get(kind, kind)
     out = subprocess.run(["pacman", "-Si", pkg], capture_output=True, text=True, env={"LC_ALL": "C"}).stdout
+    if kind not in ("qt", "python"):
+        # A library: only its sonames matter (libsndio.so=9-64 -> libsndio.so=9); its version changes far more often
+        m = re.search(r"^Provides\s*:\s*(.*)$", out, re.M)
+        sonames = sorted({p.rsplit("-", 1)[0] for p in (m.group(1).split() if m else []) if ".so=" in p})
+        return f"{kind}={','.join(sonames) or '?'}"
     m = re.search(r"^Version\s*:\s*(\S+)", out, re.M)
     # Without the pkgrel: a rebuild of Qt itself does not change what we link against
     return f"{kind}={m.group(1).rsplit('-', 1)[0] if m else '?'}"

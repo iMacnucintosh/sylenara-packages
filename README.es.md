@@ -40,7 +40,7 @@ Después, `sudo pacman -Syu sylenara-shell-git`. Las actualizaciones llegan con 
 
 ## Cómo se construye
 
-`.github/workflows/build.yml` se ejecuta cada tres horas (y a mano). En un contenedor limpio `archlinux:base-devel`, `scripts/plan.py` calcula qué cambió (una release nueva de uno de los repositorios, una versión nueva en el AUR, o un Qt o Python nuevo en Arch, a los que están atados los binarios) y `scripts/build.py` compila solo eso, firma cada paquete y la base de datos, y `scripts/publish.sh` los sube a la release `x86_64` y quita las versiones viejas.
+`.github/workflows/build.yml` se ejecuta cada tres horas (y a mano). En un contenedor limpio `archlinux:base-devel`, `scripts/plan.py` calcula qué cambió (una release nueva de uno de los repositorios, una versión nueva en el AUR, un Qt o Python nuevo en Arch, o una biblioteca que cambió de soname, como `sndio` para `libcava`: aquello a lo que están atados los binarios) y `scripts/build.sh` compila solo eso (si se recompila sin cambiar de versión, sube el pkgrel, `1` → `1.1`, para que pacman lo ofrezca), firma cada paquete y la base de datos, y `scripts/publish.sh` los sube a la release `x86_64` y quita las versiones viejas.
 
 La clave de firma es «Sylenara packages» (ed25519, `D99127AC7375512EF97E86982CBF92E205BD0DC9`). Su mitad pública es `sylenara.gpg`; la privada vive solo en el secreto `SIGNING_KEY` de este repositorio y con su dueño.
 
