@@ -40,6 +40,22 @@ if [[ -f "$OUT/$NAME.db" ]]; then
 fi
 echo "::endgroup::"
 
+# A rebuild that keeps the version (a library it links changed its soname, a new Qt) must still be newer than the
+# published package, or pacman never offers it: same pkgver, pkgrel 1 -> 1.1 -> 1.2… (an AUR pkgrel 2 is above them).
+bump_pkgrel() {
+    local name="$1" dir="$2" published built rel
+    published="$(LC_ALL=C pacman -Si "$NAME/$name" 2>/dev/null | sed -n 's/^Version *: *//p')"
+    [[ -n "$published" ]] || return 0
+    built="$(cd "$dir" && sudo -u builder env SYLENARA_REF="${3:-}" makepkg --printsrcinfo | awk -F' = ' '
+        $1 ~ /^\tepoch$/ {e = $2 ":"} $1 ~ /^\tpkgver$/ {v = $2} $1 ~ /^\tpkgrel$/ {r = $2} END {print e v "-" r}')"
+    (($(vercmp "$built" "$published") > 0)) && return 0
+    [[ "${built%-*}" == "${published%-*}" ]] || return 0 # an older pkgver than published: leave it
+    rel="${published##*-}"
+    if [[ "$rel" == *.* ]]; then rel="${rel%%.*}.$((${rel#*.} + 1))"; else rel="$rel.1"; fi
+    sed -i "s/^pkgrel=.*/pkgrel=$rel/" "$dir/PKGBUILD"
+    echo "$name: $published is published, built as ${built%-*}-$rel"
+}
+
 work=/home/builder/build
 mkdir -p "$work" && chown builder: "$work"
 built=()
@@ -58,8 +74,11 @@ while read -r pkg; do
             "https://github.com/iMacnucintosh/$(jq -r .github <<< "$pkg").git" "$dir"
         sub="$dir/packaging"
     fi
+    # Fetch and prepare first: a -git package works out its version there
+    (cd "$sub" && sudo -u builder env SYLENARA_REF="$ref" makepkg --syncdeps --nobuild --noconfirm --needed)
+    bump_pkgrel "$name" "$sub" "$ref"
     # -i: installed, so the packages built after it find it
-    (cd "$sub" && sudo -u builder env SYLENARA_REF="$ref" makepkg --syncdeps --install --sign --noconfirm --needed)
+    (cd "$sub" && sudo -u builder env SYLENARA_REF="$ref" makepkg --syncdeps --noextract --install --sign --noconfirm --needed)
     for f in "$sub"/*.pkg.tar.zst; do
         cp "$f" "$f.sig" "$OUT/"
         built+=("$OUT/$(basename "$f")")
